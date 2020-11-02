@@ -44,28 +44,7 @@ module.exports = [
         },
         {
           test: /\.less$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                esModule: false,
-              },
-            },
-            "css-loader",
-            "less-loader",
-          ],
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                esModule: false,
-              },
-            },
-            "css-loader",
-          ],
+          use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
         },
       ],
     },
@@ -73,41 +52,12 @@ module.exports = [
       extensions: [".wasm", ".mjs", ".js", ".json", ".ts"],
     },
     optimization: {
-      minimize: true,
+      minimize: false,
       usedExports: true,
-      minimizer: [
-        new TerserPlugin({
-          test: /\.js(\?.*)?$/i,
-          exclude: /node_modules/,
-        }),
-      ],
-      runtimeChunk: {
-        name: "mini_require",
-      },
-      splitChunks: {
-        chunks: "all",
-        maxInitialRequests: Infinity,
-        minSize: 0,
-        cacheGroups: {
-          common: {
-            name: "common",
-            minChunks: 2,
-            priority: 1,
-          },
-          vendors: {
-            name: "vendors",
-            minChunks: 1,
-            test: (module) => {
-              return /[\\/]node_modules[\\/]/.test(module.resource);
-            },
-            priority: 10,
-          },
-        },
-      },
     },
     plugins: [
       new MiniCssExtractPlugin({
-        name: "[name].acss",
+        filename: "[name].acss",
       }),
     ],
   },
